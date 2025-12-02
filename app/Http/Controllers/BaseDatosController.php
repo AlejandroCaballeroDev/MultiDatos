@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BaseDatos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Models\Registro;
 
 class BaseDatosController extends Controller
 {
@@ -98,5 +99,43 @@ class BaseDatosController extends Controller
         ]);
 
         return back()->with('success', 'Registro añadido correctamente.');
+    }
+
+    /**
+     * Elimina una base de datos.
+     */
+    public function destroy(BaseDatos $baseDatos)
+    {
+        $baseDatos->delete();
+        return redirect()->route('dashboard')->with('success', 'Base de datos eliminada correctamente.');
+    }
+
+    /**
+     * Actualiza una base de datos.
+     */
+    public function updateRegistro(Request $request, BaseDatos $baseDatos, Registro $registro)
+    {
+        // 1. Validamos igual que al crear
+        $reglas = [];
+        foreach ($baseDatos->configuracion_tabla as $columna) {
+            $nombreCampo = $columna['nombre'];
+            $tipoCampo = $columna['tipo'];
+            
+            $rules = ['required'];
+            if ($tipoCampo === 'numero') $rules[] = 'numeric';
+            if ($tipoCampo === 'fecha') $rules[] = 'date';
+            if ($tipoCampo === 'texto') $rules[] = 'string';
+            
+            $reglas["datos.$nombreCampo"] = $rules; 
+        }
+
+        $request->validate($reglas);
+
+        // 2. Actualizamos el registro
+        $registro->update([
+            'datos' => $request->input('datos')
+        ]);
+
+        return back()->with('success', 'Registro actualizado correctamente.');
     }
 }

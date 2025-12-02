@@ -19,9 +19,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::get('/bases-datos/crear', [BaseDatosController::class, 'create'])->name('basesdatos.create');
     Route::post('/bases-datos', [BaseDatosController::class, 'store'])->name('basesdatos.store');
-
     Route::get('/bases-datos/{baseDatos}', [BaseDatosController::class, 'show'])->name('basesdatos.show');
     Route::post('/bases-datos/{baseDatos}/registros', [BaseDatosController::class, 'storeRegistro'])->name('registros.store');
+    Route::delete('/bases-datos/{baseDatos}', [BaseDatosController::class, 'destroy'])->name('basesdatos.destroy');
+    Route::put('/bases-datos/{baseDatos}/registros/{registro}', [BaseDatosController::class, 'updateRegistro'])->name('registros.update');
 });
 
 require __DIR__.'/auth.php';
