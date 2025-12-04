@@ -23,6 +23,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/bases-datos/{baseDatos}/registros', [BaseDatosController::class, 'storeRegistro'])->name('registros.store');
     Route::delete('/bases-datos/{baseDatos}', [BaseDatosController::class, 'destroy'])->name('basesdatos.destroy');
     Route::put('/bases-datos/{baseDatos}/registros/{registro}', [BaseDatosController::class, 'updateRegistro'])->name('registros.update');
+    Route::post('/bases-datos/{baseDatos}/columna-config', [BaseDatosController::class, 'updateColumnConfig'])->name('basesdatos.column.config');
 });
 
 require __DIR__.'/auth.php';
